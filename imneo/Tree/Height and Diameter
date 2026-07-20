@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+    int val;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        this->val = val;
+        left = NULL;
+        right = NULL;
+    }
+};
+
+// Build tree using 2*i+1 and 2*i+2
+Node* insert(vector<int> &arr, int i) {
+    if (i >= arr.size() || arr[i] == -1)
+        return NULL;
+
+    Node* root = new Node(arr[i]);
+
+    root->left = insert(arr, 2 * i + 1);
+    root->right = insert(arr, 2 * i + 2);
+
+    return root;
+}
+
+// Height (in nodes)
+int findHeight(Node* root) {
+    if (!root)
+        return 0;
+    int left = findHeight(root->left);
+    int right = findHeight(root->right);
+    return 1 + max(left,right);
+}
+
+int diameter = 0;
+
+// Returns height and updates diameter
+int findDiameter(Node* root) {
+    if (!root)
+        return 0;
+
+    int l = findDiameter(root->left);
+    int r = findDiameter(root->right);
+
+    diameter = max(diameter, l + r + 1);   
+
+    return 1 + max(l, r);
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> arr(n);
+
+    for (int i = 0; i < n; i++)
+        cin >> arr[i];
+
+    Node* root = insert(arr, 0);
+
+    cout << "Height: " << findHeight(root) << endl;
+
+    findDiameter(root);
+
+    cout << "Diameter: " << diameter << endl;
+
+    return 0;
+}
