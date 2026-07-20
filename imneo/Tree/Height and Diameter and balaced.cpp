@@ -50,6 +50,31 @@ int findDiameter(Node* root) {
     return 1 + max(l, r);
 }
 
+// Returns height if balanced, otherwise -1
+int checkBalanced(Node* root) {
+    if (!root)
+        return 0;
+
+    int left = checkBalanced(root->left);
+    if (left == -1)
+        return -1;
+
+    int right = checkBalanced(root->right);
+    if (right == -1)
+        return -1;
+
+
+    if (abs(left - right) > 1)
+        return -1;
+
+    // Return height
+    return 1 + max(left, right);
+}
+
+bool isBalanced(Node* root) {
+    return 
+}
+
 int main() {
     int n;
     cin >> n;
@@ -67,5 +92,6 @@ int main() {
 
     cout << "Diameter: " << diameter << endl;
 
+    cout<<"Balanced: "<<checkBalanced(root) != -1;
     return 0;
 }
